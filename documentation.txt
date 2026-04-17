@@ -6,3 +6,22 @@ SECTION: HEAD -> head section
   title:{} -> create title
   css:{} -> load css files
 SECTION:BODY -> body section
+  head:{} -> create header
+  sub:{} -> subheader
+  text:{} -> text
+  note:{} -> note
+  line -> create line between paragraphs
+  break -> add empty line
+
+Example usage:
+SECTION:HEAD
+title:text to html converter
+css:lol.css
+
+SECTION:BODY
+head:if you see this text converted, it works
+sub:this is supposed to be displayed on a html page
+line
+text:abcd12345
+text:i can edit this freely however i want purely from input.txt
+text:to change, just edit input.txt and rerun the python code to generate
