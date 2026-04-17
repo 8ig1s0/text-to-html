@@ -1,0 +1,8 @@
+Structure: configurable in converter.py
+basically:
+available functions:
+sections:
+SECTION: HEAD -> head section
+  title:{} -> create title
+  css:{} -> load css files
+SECTION:BODY -> body section
