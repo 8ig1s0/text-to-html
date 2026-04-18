@@ -6,7 +6,7 @@ from pathlib import Path
 path = Path("index.html.bak")
 if path.exists():
     confirmdelete = input("Confirm that you want to delete index.html.bak? (Y/n)")
-    if confirmdelete == 'y' or confirmdelte == 'y':
+    if confirmdelete.lower() == 'y':
         Path("index.html.bak").unlink(missing_ok=True) # Delete backup file
         print("index.html.bak deleted")
     else:
