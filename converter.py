@@ -18,7 +18,7 @@ if path.exists():
     print("index.html moved to index.html.bak")
 
 # Setup
-TAG_MAP = {
+structure_map = {
     "title:": "<title>{}</title>",
     "text:":  "<p>{}</p>",
     "head:":  "<h1>{}</h1>",
@@ -26,7 +26,8 @@ TAG_MAP = {
     "note:":  "<i>{}</i>",
     "css:":   '<link rel="stylesheet" href="{}">',
     "line":   "<hr>",
-    "break":  "<br>"
+    "break":  "<br>",
+    "comment:": "<!-- {} -->",
 }
 
 head_elements = []
@@ -50,14 +51,14 @@ with open('input.txt', 'r') as infile:
 
         # Handle standalone tags (no content)
         if clean == "line":
-            body_elements.append("    " + TAG_MAP["line"] + "\n")
+            body_elements.append("    " + structure_map["line"] + "\n")
             continue
         elif clean == "break":
-            body_elements.append("    " + TAG_MAP["break"] + "\n")
+            body_elements.append("    " + structure_map["break"] + "\n")
             continue
 
         # Handle tags with content
-        for marker, template in TAG_MAP.items():
+        for marker, template in structure_map.items():
             if clean.startswith(marker):
                 content = clean[len(marker):].strip()
                 formatted = template.format(content) + "\n"
