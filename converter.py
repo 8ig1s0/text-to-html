@@ -18,7 +18,7 @@ if path.exists():
     print("index.html moved to index.html.bak")
 
 # Setup
-# The templates now use {0}, {1}, {2} to map to your split text fields
+# Templates map fields using {0}, {1}, {2} sequentially
 structure_map = {
     "title:":   "<title>{0}</title>",
     "text:":    "<p>{0}</p>",
@@ -33,7 +33,7 @@ structure_map = {
     # 2 Fields: Link URL | Link Text
     "link:":    '<a href="{0}">{1}</a>',
     
-    # 3 Fields: Image Link URL | Image Source File | Alt Description (Advanced Button!)
+    # 3 Fields: Image Link URL | Image Source File | Alt Description
     "imglink:": '<a href="{0}"><img src="{1}" alt="{2}"></a>'
 }
 
@@ -72,17 +72,16 @@ with open('input.txt', 'r') as infile:
                 # Split content into multiple fields using '|' and clean up spaces
                 fields = [field.strip() for field in raw_content.split('|')]
                 
-                # Safety fallback: If a user misses a field, fill it with a duplicate of the first one
-                # This prevents the script from crashing if you only type 'link: https://google.com'
+                # FIXED FALLBACK: Safely counts and pads missing arguments with the first field
                 expected_fields = template.count('{')
                 while len(fields) < expected_fields:
-                    fields.append(fields[0])
+                    fields.append(fields[0] if fields else "")
                 
                 # Automatically unpack fields into the HTML template (*fields)
                 formatted = template.format(*fields) + "\n"
                 
                 if marker == "title:":
-                    page_title = fields[0]
+                    page_title = fields[0] # Set the title global variable
                 elif current_section == "HEAD":
                     head_elements.append("    " + formatted)
                 else:
