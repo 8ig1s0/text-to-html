@@ -13,6 +13,9 @@ SECTION:BODY -> body section
   line -> create line between paragraphs
   break -> add empty line
   comment:{} -> add single line comment
+  link: {Link} | {Description} -> Add link at address {Link} with description {Description}
+  imglink: {Link URL} | {Source file} | {Description} -> Add image links
+
 
 Example usage:
 SECTION:HEAD
