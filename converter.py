@@ -18,16 +18,23 @@ if path.exists():
     print("index.html moved to index.html.bak")
 
 # Setup
+# The templates now use {0}, {1}, {2} to map to your split text fields
 structure_map = {
-    "title:": "<title>{}</title>",
-    "text:":  "<p>{}</p>",
-    "head:":  "<h1>{}</h1>",
-    "sub:":   "<h2>{}</h2>",
-    "note:":  "<i>{}</i>",
-    "css:":   '<link rel="stylesheet" href="{}">',
-    "line":   "<hr>",
-    "break":  "<br>",
-    "comment:": "<!-- {} -->",
+    "title:":   "<title>{0}</title>",
+    "text:":    "<p>{0}</p>",
+    "head:":    "<h1>{0}</h1>",
+    "sub:":     "<h2>{0}</h2>",
+    "note:":    "<i>{0}</i>",
+    "css:":     '<link rel="stylesheet" href="{0}">',
+    "line":     "<hr>",
+    "break":    "<br>",
+    "comment:": "<!-- {0} -->",
+    
+    # 2 Fields: Link URL | Link Text
+    "link:":    '<a href="{0}">{1}</a>',
+    
+    # 3 Fields: Image Link URL | Image Source File | Alt Description (Advanced Button!)
+    "imglink:": '<a href="{0}"><img src="{1}" alt="{2}"></a>'
 }
 
 head_elements = []
@@ -60,11 +67,22 @@ with open('input.txt', 'r') as infile:
         # Handle tags with content
         for marker, template in structure_map.items():
             if clean.startswith(marker):
-                content = clean[len(marker):].strip()
-                formatted = template.format(content) + "\n"
+                raw_content = clean[len(marker):].strip()
+                
+                # Split content into multiple fields using '|' and clean up spaces
+                fields = [field.strip() for field in raw_content.split('|')]
+                
+                # Safety fallback: If a user misses a field, fill it with a duplicate of the first one
+                # This prevents the script from crashing if you only type 'link: https://google.com'
+                expected_fields = template.count('{')
+                while len(fields) < expected_fields:
+                    fields.append(fields[0])
+                
+                # Automatically unpack fields into the HTML template (*fields)
+                formatted = template.format(*fields) + "\n"
                 
                 if marker == "title:":
-                    page_title = content
+                    page_title = fields[0]
                 elif current_section == "HEAD":
                     head_elements.append("    " + formatted)
                 else:
