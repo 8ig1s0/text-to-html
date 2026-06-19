@@ -11,6 +11,7 @@ if path.exists():
         print("index.html.bak deleted")
     else:
         print("Nothing was deleted, operation could not continue")
+        exit()
 
 path = Path("index.html")
 if path.exists():
@@ -25,7 +26,7 @@ structure_map = {
     "head:":    "<h1>{0}</h1>",
     "sub:":     "<h2>{0}</h2>",
     "note:":    "<i>{0}</i>",
-    "css:":     '<link rel="stylesheet" href="{0}">',
+    "css:":     '<link rel="stylesheet" href="{0}">', # Load CSS from file
     "line":     "<hr>",
     "break":    "<br>",
     "comment:": "<!-- {0} -->",
